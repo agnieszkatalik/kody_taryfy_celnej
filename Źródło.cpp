@@ -5,7 +5,8 @@
 
 using namespace std;
 
-#define n 12749 // iloœæ linii fileu
+#define n 13567 // iloœæ linii pliku
+#define cc 41 // liczba rzeczy
 
 void function(int *custom_code, int *qnt, string *item_name, string *country_of_origin, double *value_eur, string *name)
 {
@@ -38,7 +39,7 @@ void function(int *custom_code, int *qnt, string *item_name, string *country_of_
 						value_eur[i] = 0;
 
 						custom_code[i] = 0;
-						for (int l = 0; l < 38; l++)
+						for (int l = 0; l < cc; l++)
 						{
 							size_t found_j = item_name[j].find(name[l]);
 							size_t found_i = item_name[i].find(name[l]);
@@ -72,7 +73,7 @@ int main()
 	string* country_of_origin = new string[n];
 	double* value_eur = new double[n];
 	double price_unit_euro;
-	string name[38] = { "NIGHTWEAR","UNDERWEAR", "JACKET", "LEGGINGS", "T-SHIRT", "PANTS", "SET", "SORTS", "BEACHWEAR", "CARDIGAN", "SHIRT", "SKIRT", "SWEATSHIRT", "0", "VEST", "SWEATER", "DRESS", "BODY", "TRACKSUIT", "BABY_BIB", "TOP", "CAP", "SOCKS", "SHOES", "BAG", "BELT", "SCARF", "TIE", "ACCESSORIES", "OVERAL", "MAJICA", "BATHROBE", "SUIT", "COAT", "WALLET", "BLAZER", "A", "BABY_SUIT" };
+	string name[cc] = { "0","A","ACCESSORIES","BABY BIB","BABY SUIT","BAG","BATHROBE","BEACHWEAR","BELT","BLAZER","BODY","CAP","CARDIGAN","COAT","DRESS","JACKET","KIDS ACCESSORIES","LEGGINGS","MAJICA","NIGHTWEAR","OVERAL","PANTS","RIANCOAT","RAINCOAT","SCARF","SET","SHIRT","SHOES","SKIRT","SOCKS","SORTS","SUIT","SWEATER","SWEATSHIRT","TIE","TOP","TRACKSUIT","T-SHIRT","UNDERWEAR","VEST","WALLET"};
 
 	int i = 0;
 
