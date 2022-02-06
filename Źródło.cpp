@@ -63,8 +63,9 @@ void function(int *custom_code, int *qnt, string *item_name, string *country_of_
 	}
 }
 
-string* names(string *item_name, int n, int m) {
+void names(int* custom_code, int* qnt, string* item_name, string* country_of_origin, double* value_eur, int n) {
 
+	static int m = 0; // to bêdzie liczba przedmiotów
 	string* tmp = new string[100];
 	bool t = false;
 
@@ -87,15 +88,17 @@ string* names(string *item_name, int n, int m) {
 	for (int i = 0; i < m; i++)
 	{
 		names[i] = tmp[i];
+		//cout << names[i] << endl;
 	}
+	//cout << n << " " << m << endl;
 	delete[] tmp;
-	return names;
+
+	function(custom_code, qnt, item_name, country_of_origin, value_eur, names, n, m);
 }
 
 int main()
 {
 	static int n = 0;
-	static int m = 0; // to bêdzie liczba przedmiotów
 
 	ifstream file;
 	file.open("kody.txt", std::ios::in | std::ios::out);
@@ -126,6 +129,7 @@ int main()
 		for(int i=0; i<n; i++)
 		{
 			file >> item_name[i] >> custom_code[i] >> country_of_origin[i] >> qnt[i] >> price_unit_euro >> value_eur[i];
+			//cout << item_name[i] << custom_code[i] << " " <<  country_of_origin[i] << " " << qnt[i] << " "<< price_unit_euro << " " << value_eur[i]<< endl;
 		}
 
 		price_unit_euro = 0;
@@ -134,10 +138,7 @@ int main()
 
 
 
-		string* items = names(item_name, n, m);
-		function(custom_code, qnt, item_name, country_of_origin, value_eur, items, n, m);
-
-
+		names(custom_code, qnt, item_name, country_of_origin, value_eur, n);
 
 		ofstream done("gotowe.txt");
 		for (int i = 0; i < n; i++)
@@ -147,7 +148,7 @@ int main()
 		}
 
 		
-		delete[] custom_code, qnt, item_name, country_of_origin, value_eur, items;
+		delete[] custom_code, qnt, item_name, country_of_origin, value_eur;
 
 		done.close();
 
