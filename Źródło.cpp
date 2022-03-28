@@ -7,79 +7,69 @@ using namespace std;
 
 
 
-void function(int *custom_code, int *qnt, string *item_name, string *country_of_origin, double *value_eur, string *items, int n, int m)
+void function(string* data_wystawienia, string* dokument, int* pozycja, string* kontrahent, string* nip, string* nazwa, double* ilosc, double* wartosc_netto_pln, string* kraj, string* kod_celny, double* waga, int n)
 {
 	for (int i = 0; i < n - 1; i++)
 	{
 		for (int j = i + 1; j < n; j++)
 		{
-			if (custom_code[i] == custom_code[j] && custom_code[i] != 0)
+			if (dokument[i] == dokument[j] && dokument[i] != "0")
 			{
-				if (country_of_origin[i] == country_of_origin[j] && country_of_origin[i] != "0")
+				if (kraj[i] == kraj[j] && kraj[i] != "0")
 				{
-					if (item_name[i] == item_name[j] && item_name[i] != "0")
+					if (kod_celny[i] == kod_celny[j] && kod_celny[i] != "0" && kod_celny[i] != "*")
 					{
-						qnt[j] += qnt[i];
-						qnt[i] = 0;
 
-						value_eur[j] += value_eur[i];
-						value_eur[i] = 0;
+						ilosc[j] += ilosc[i];
+						ilosc[i] = 0;
 
-						custom_code[i] = 0;
-						item_name[i] = "0";
-						country_of_origin[i] = "0";
-					}
-					else if (item_name[i] != "0")
-					{
-						qnt[j] += qnt[i];
-						qnt[i] = 0;
+						wartosc_netto_pln[j] += wartosc_netto_pln[i];
+						wartosc_netto_pln[i] = 0;
 
-						value_eur[j] += value_eur[i];
-						value_eur[i] = 0;
+						waga[j] += waga[i];
+						waga[i] = 0;
 
-						custom_code[i] = 0;
-						for (int l = 0; l < m; l++)
-						{
-							size_t found_j = item_name[j].find(items[l]);
-							size_t found_i = item_name[i].find(items[l]);
-							if (found_i != string::npos && found_j != string::npos)
-							{
-							}
+						nazwa[j] = nazwa[i];
 
-							else if (found_i != string::npos)
-							{
-								item_name[j] += ", " + items[l];
 
-							}
+						data_wystawienia[i] = "0";
+						dokument[i] = "0";
+						pozycja[i] = 0;
+						kontrahent[i] = "0";
+						nip[i] = "0";
+						nazwa[i] = "0";
+						ilosc[i] = 0;
+						wartosc_netto_pln[i] = 0;
+						kraj[i] = "0";
+						kod_celny[i] = "0";
 
-						}
-						item_name[i] = "0";
-
-						country_of_origin[i] = "0";
 					}
 				}
 			}
+			//else
+
 		}
 	}
 }
 
-void names(int* custom_code, int* qnt, string* item_name, string* country_of_origin, double* value_eur, int n) {
+
+void names(string* data_wystawienia, string* dokument, int* pozycja, string* kontrahent, string* nip, string* nazwa, double* ilosc, double* wartosc_netto_pln, string* kraj, string* kod_celny, double* waga, int n){
 
 	static int m = 0; // to bêdzie liczba przedmiotów
-	string* tmp = new string[100];
+	string* tmp = new string[10000];
 	bool t = false;
 
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < m + 1; j++)
 		{
-			if (tmp[j] == item_name[i])
+			if (tmp[j] == nazwa[i])
 				t = true;
 
 		}
 		if (t == false)
 		{
-			tmp[m] = item_name[i];
+			tmp[m] = nazwa[i];
 			m++;
 		}
 		t = false;
@@ -93,8 +83,41 @@ void names(int* custom_code, int* qnt, string* item_name, string* country_of_ori
 	//cout << n << " " << m << endl;
 	delete[] tmp;
 
-	function(custom_code, qnt, item_name, country_of_origin, value_eur, names, n, m);
+	//function(data_wystawienia, dokument, pozycja, kontrahent, nip, nazwa, ilosc, wartosc_netto_pln, kraj, kod_celny, waga, names, n, m);
 }
+/*
+void codes(string* data_wystawienia, string* dokument, int* pozycja, string* kontrahent, string* nip, string* nazwa, double* ilosc, double* wartosc_netto_pln, string* kraj, string* kod_celny, double* waga, int n) {
+
+	static int m = 0; // to bêdzie liczba kodó
+	string* tmp = new string[10000];
+	bool t = false;
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m + 1; j++)
+		{
+			if (tmp[j] == kod_celny[i])
+				t = true;
+
+		}
+		if (t == false)
+		{
+			tmp[m] = kod_celny[i];
+			m++;
+		}
+		t = false;
+	}
+	string* code = new string[m];
+	for (int i = 0; i < m; i++)
+	{
+		code[i] = tmp[i];
+		//cout << names[i] << endl;
+	}
+	//cout << n << " " << m << endl;
+	delete[] tmp;
+
+	function(data_wystawienia, dokument, pozycja, kontrahent, nip, nazwa, ilosc, wartosc_netto_pln, kraj, kod_celny, waga, code, n, m);
+}*/
 
 int main()
 {
@@ -114,41 +137,48 @@ int main()
 			{
 				n++;
 			}
-
+			//cout << n;
 			file.close();
 
-			int* custom_code = new int[n];
-			int* qnt = new int[n];
-			string* item_name = new string[n];
-			string* country_of_origin = new string[n];
-			double* value_eur = new double[n];
-			double price_unit_euro;
+			string* data_wystawienia = new string[n];
+			string* dokument = new string[n];
+			int* pozycja = new int[n];
+			string* nazwa = new string[n];
+			string* kontrahent = new string[n];
+			string* nip = new string[n];
+			double* ilosc = new double[n];
+			double* wartosc_netto_pln = new double[n];
+			string* kraj = new string[n];
+			string* kod_celny = new string[n];
+			double* waga = new double[n];
+			double* suma_wartosci_faktury = new double[n];
+			double* suma_wag_faktury = new double[n];
 
 			file.open("kody.txt", std::ios::in | std::ios::out);
 
 		for(int i=0; i<n; i++)
 		{
-			file >> item_name[i] >> custom_code[i] >> country_of_origin[i] >> qnt[i] >> price_unit_euro >> value_eur[i];
-			//cout << item_name[i] << custom_code[i] << " " <<  country_of_origin[i] << " " << qnt[i] << " "<< price_unit_euro << " " << value_eur[i]<< endl;
-		}
+			//file >> nazwa[i] >> dokument[i] >> kraj[i] >> ilosc[i] >> price_unit_euro >> wartosc_netto_pln[i];
+			file >> data_wystawienia[i] >> dokument[i] >> pozycja[i] >> kontrahent[i] >> nip[i] >> nazwa[i] >> ilosc[i] >> wartosc_netto_pln[i] >> kraj[i] >> kod_celny[i] >> waga[i];
 
-		price_unit_euro = 0;
+			//cout << i << " " << data_wystawienia[i] << " " << dokument[i] << " " << pozycja[i] << " " << kontrahent[i] << " " << nip[i] << " " << nazwa[i] << " " << ilosc[i] << " " << wartosc_netto_pln[i] << " " << kraj[i] << " " << kod_celny[i] << " " << waga[i] << endl;
+		}
+		//cout << kod_celny[104];
 
 		file.close();
 
-
-
-		names(custom_code, qnt, item_name, country_of_origin, value_eur, n);
+		function(data_wystawienia, dokument, pozycja, kontrahent, nip, nazwa, ilosc, wartosc_netto_pln, kraj, kod_celny, waga, n);
+		//codes(data_wystawienia, dokument, pozycja, kontrahent, nip, nazwa, ilosc, wartosc_netto_pln, kraj, kod_celny, waga, n);
 
 		ofstream done("gotowe.txt");
 		for (int i = 0; i < n; i++)
 		{
-			//cout << i << ": " << item_name[i] << " " << custom_code[i] << " " << country_of_origin[i] << " " << qnt[i] << " " << value_eur[i] << endl;
-			done << item_name[i] << "\t" << custom_code[i] << "\t" << country_of_origin[i] << "\t" << qnt[i] << "\t" << value_eur[i] << endl;
+			//cout << data_wystawienia[i] << "\t" << dokument[i] << "\t" << pozycja[i] << "\t" << kontrahent[i] << "\t" << nip[i] << "\t" << nazwa[i] << "\t" << ilosc[i] << "\t" << wartosc_netto_pln[i] << "\t" << kraj[i] << "\t" << kod_celny[i] << "\t" << waga[i] << endl;
+			done << data_wystawienia[i] <<"\t" << dokument[i] << "\t" << pozycja[i] << "\t" << kontrahent[i] << "\t" << nip[i] << "\t" << nazwa[i] << "\t" << ilosc[i] << "\t" << wartosc_netto_pln[i] << "\t" << kraj[i] << "\t" << kod_celny[i] << "\t" << waga[i] << endl;
 		}
 
 		
-		delete[] custom_code, qnt, item_name, country_of_origin, value_eur;
+		delete[] data_wystawienia, dokument, pozycja, kontrahent, nip, nazwa, ilosc, wartosc_netto_pln, kraj, kod_celny, waga;
 
 		done.close();
 
@@ -161,15 +191,18 @@ int main()
 			exit(0);
 		}
 
+		
 		else
 		{
 			ofstream done("kody_gotowe.txt");
 
 			string linia;
+			done << "Data_Wystawienia \t Dokument \t Pozycja \t Kontrahent \t	NIP \t	Nazwa \t	Iloœæ \t	Wartoœæ_Netto_PLN \t	Kraj \t	 Kod_celny \t	Waga" <<endl;
+
 			do
 			{
 				getline(done_tmp, linia);
-				if (linia != "0	0	0	0	0")
+				if (linia != "0	0	0	0	0	0	0	0	0	0	0")
 				{
 					done << linia << endl;
 					cout << linia << endl;
@@ -181,8 +214,9 @@ int main()
 			done_tmp.close();
 
 			remove("gotowe.txt");
+		
 		}
-
+		
 	}
 
 		return 0;
